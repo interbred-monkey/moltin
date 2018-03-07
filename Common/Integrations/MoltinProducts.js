@@ -20,21 +20,23 @@ class MoltinProducts extends MotlinCore {
   CreateProductParameters(params) {
 
     let structured = {
-      type: 'product',
-      id: params.id,
-      name: params.name,
-      slug: params.slug,
-      sku: params.sku,
-      manage_stock: true,
-      description: params.description,
-      price: [
-        {
-          amount: params.price,
-          currency: params.currency,
-          includes_tax: params.price_includes_tax
-        }
-      ],
-      status: (params.publish?'live':'draft')
+      data: {
+        type: 'product',
+        name: params.name,
+        slug: params.slug,
+        sku: params.sku,
+        manage_stock: true,
+        description: params.description,
+        price: [
+          {
+            amount: params.price,
+            currency: params.currency,
+            includes_tax: params.price_includes_tax
+          }
+        ],
+        status: (params.publish?'live':'draft'),
+        commodity_type: 'digital'
+      }
     };
 
     return structured;
@@ -58,19 +60,23 @@ class MoltinProducts extends MotlinCore {
       headers: {
         Authorization: `Bearer ${token}`
       },
+      json: true,
       body: params
     };
 
-    let [err, data] = await curl(curlParams);
+    try {
 
-    if (!_.isNull(err) || !_.isObject(data) || !_.isString(data.id)) {
-
-      __logging.error(__formatError(err || 'Uknown format returned'));
-      return ['Unable to add product to Motlin'];
+      let data = await curl(curlParams);
+      return [null, data];
 
     }
 
-    return [null, data];
+    catch(e) {
+
+      __logging.error(e);
+      return ['Unable to add product to Motlin'];
+
+    }
 
   }
 

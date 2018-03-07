@@ -11,9 +11,9 @@ class BaseModel {
 
   constructor() {}
 
-  async CreateDBConnection(collection) {
+  async CreateDBConnection(connection) {
 
-    await db.CreateConnection(collection);
+    await db.CreateConnection(connection);
 
     return;
 
@@ -36,12 +36,12 @@ class BaseModel {
 
   }
 
-  async Insert(collection, entity) {
+  async Insert(connection, entity) {
 
     try {
 
       let error = null;
-      [error] = await db.Insert(collection, entity);
+      [error] = await db.Insert(connection, entity);
 
       return [error, entity];
 
@@ -56,12 +56,12 @@ class BaseModel {
 
   }
 
-  async BulkInsert(collection, entities) {
+  async BulkInsert(connection, entities) {
 
     try {
 
       let error = null;
-      [error] = await db.BulkInsert(collection, entities);
+      [error] = await db.BulkInsert(connection, entities);
 
       return [error, entities];
 
@@ -76,11 +76,11 @@ class BaseModel {
 
   }
 
-  async Get(collection, query) {
+  async Get(connection, query) {
 
     try {
 
-      let [error, entity] = await db.Get(collection, query);
+      let [error, entity] = await db.Get(connection, query);
       return [error, entity];
 
     }
@@ -94,11 +94,11 @@ class BaseModel {
 
   }
 
-  async Search(collection, query) {
+  async Search(connection, query) {
 
     try {
 
-      let [error, entities] = await db.Search(collection, query);
+      let [error, entities] = await db.Search(connection, query);
       return [error, entities];
 
     }
@@ -112,13 +112,13 @@ class BaseModel {
 
   }
 
-  async Update(collection, query, entity) {
+  async Update(connection, query, entity) {
 
     try {
 
       entity.ModifiedUtc = moment().utc().format('YYYY-M-D HH:mm:ss');
 
-      let [error] = await db.Update(collection, query, entity);
+      let [error] = await db.Update(connection, query, entity);
 
       return [error, entity];
 
@@ -133,7 +133,7 @@ class BaseModel {
 
   }
 
-  async BulkUpdate(collection, queries, entities) {
+  async BulkUpdate(connection, queries, entities) {
 
     try {
 
@@ -144,7 +144,7 @@ class BaseModel {
 
       });
 
-      let [error] = await db.BulkUpdate(collection, queries, entities);
+      let [error] = await db.BulkUpdate(connection, queries, entities);
 
       return [error, entities];
 
@@ -159,11 +159,11 @@ class BaseModel {
 
   }
 
-  async Delete(collection, query) {
+  async Delete(connection, query) {
 
     try {
 
-      let [error] = await db.Delete(collection, query);
+      let [error] = await db.Delete(connection, query);
       return [error];
 
     }
@@ -177,11 +177,11 @@ class BaseModel {
 
   }
 
-  async BulkDelete(collection, query) {
+  async BulkDelete(connection, query) {
 
     try {
 
-      let [error] = await db.BulkDelete(collection, query);
+      let [error] = await db.BulkDelete(connection, query);
       return [error];
 
     }

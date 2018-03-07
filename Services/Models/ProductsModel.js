@@ -11,7 +11,16 @@ class ProductsModel extends BaseModel {
 
     super();
 
-    this.CreateDBConnection('moltin');
+  }
+
+  CreateEntityModel(params) {
+
+    return {
+      Id: params.id || null,
+      Name: params.name,
+      SKU: params.sku,
+      ExternalId: params.externalId
+    };
 
   }
 
@@ -69,10 +78,12 @@ class ProductsModel extends BaseModel {
 
       let error           = null,
           model           = this.CreateModel(params),
-          entity          = this.CreateEntityFromModel(model);
+          entityModel     = this.CreateEntityModel(params),
+          entity          = this.CreateEntityFromModel(entityModel);
 
-      [error, entity] = await this.Insert('products', entity);
-      model = this.CreateModelFromEntity(entity);
+      let connection = this.CreateDBConnection('products');
+      [error, entity] = await this.Insert(connection, entity);
+      this.CloseConnection(connection);
 
       return [error, model];
 
@@ -101,7 +112,9 @@ class ProductsModel extends BaseModel {
 
     try {
 
-      let [error, entity] = await this.Get('products', query);
+      let connection = this.CreateDBConnection('products');
+      let [error, entity] = await this.Get(connection, query);
+      this.CloseConnection(connection);
       let model = this.CreateModelFromEntity(entity);
 
       return [error, model];

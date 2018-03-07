@@ -4,7 +4,7 @@ const _               = require('lodash/core'),
       uuid            = require('uuid/v4'),
       randomString    = require('random-string'),
       ProductsModel   = require(`${__base}/Services/Models/ProductsModel.js`),
-      ProductsLibrary = require(`${__base}/Common/Integrations/Moltin.js`),
+      ProductsLibrary = require(`${__base}/Common/Integrations/MoltinProducts.js`),
       productsModel   = new ProductsModel(),
       productsLibrary = new ProductsLibrary();
 
@@ -12,17 +12,11 @@ class ProductsService {
 
   constructor() {}
 
-  GenerateId() {
-
-    return uuid();
-
-  }
-
   GenerateSKU(name) {
 
     const exclusionList = ['!','$','%','^','&','*','(',')','_','+','|','~','=','`','{','}','[',']',':',';','<','>','?',',','.','/'];
 
-    let sku = name.replace(' ', '-').slice(5).trim();
+    let sku = name.slice(0, 5).trim().replace(/\s/g, '-');
     let postfix = randomString({
       length: 8,
       numeric: true,
@@ -31,19 +25,18 @@ class ProductsService {
       exclude: exclusionList
     });
 
-    return `${sku}${postfix}`;
+    return `${sku}-${postfix}`;
 
   }
 
   GenerateSlug(name) {
 
-    return `${name.replace(' ', '-')}`;
+    return `${name.replace(/\s/g, '-')}`;
 
   }
 
-  async CreateProducts(params) {
+  async CreateProduct(params) {
 
-    params.id = this.GenerateProductId();
     params.slug = this.GenerateSlug(params.name);
     params.sku = this.GenerateSKU(params.name);
 
@@ -57,7 +50,13 @@ class ProductsService {
 
     }
 
-    console.log(res);
+    if (!_.isObject(res.data) || !_.isString(res.data.id)) {
+
+      return ['Unable to create product, invalid external reference'];
+
+    }
+
+    params.externalId = res.data.id;
 
     let [error, model] = await productsModel.Create(params);
 
@@ -65,7 +64,7 @@ class ProductsService {
 
   }
 
-  async GetProductsById(params) {
+  async GetProductById(params) {
 
     let [error, model] = await productsModel.Create(params);
 

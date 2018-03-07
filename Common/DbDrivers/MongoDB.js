@@ -2,7 +2,7 @@
 /*global __formatError*/
 
 const _         = require('lodash/core'),
-      Library   = require('mongodb');
+      Library   = require('mongodb').MongoClient;
 
 class Mongo {
 
@@ -80,7 +80,7 @@ class Mongo {
 
   }
 
-  async Insert(connection, collection, document) {
+  async Insert(connection, document) {
 
     if (!_.isObject(document)) {
 
@@ -111,7 +111,7 @@ class Mongo {
 
   }
 
-  async BulkInsert(connection, collection, documents) {
+  async BulkInsert(connection, documents) {
 
     if (!_.isArray(documents)) {
 
@@ -142,7 +142,7 @@ class Mongo {
 
   }
 
-  async Get(connection, collection, query) {
+  async Get(connection, query) {
 
     if (!_.isObject(query)) {
 
@@ -173,7 +173,7 @@ class Mongo {
 
   }
 
-  async Search(connection, collection, query) {
+  async Search(connection, query) {
 
     if (!_.isObject(query)) {
 
@@ -197,7 +197,7 @@ class Mongo {
 
   }
 
-  async Update(connection, collection, query, document) {
+  async Update(connection, query, document) {
 
     if (!_.isObject(query)) {
 
@@ -234,7 +234,7 @@ class Mongo {
 
   }
 
-  async BulkUpdate(connection, collection, queries, documents) {
+  async BulkUpdate(connection, queries, documents) {
 
     if (!_.isArray(queries)) {
 
@@ -271,7 +271,7 @@ class Mongo {
 
   }
 
-  async Delete(connection, collection, query = null) {
+  async Delete(connection, query = null) {
 
     if (_.isNull(query)) {
 
@@ -302,7 +302,7 @@ class Mongo {
 
   }
 
-  async BulkDelete(connection, collection, query) {
+  async BulkDelete(connection, query) {
 
     if (!_.isObject(query)) {
 

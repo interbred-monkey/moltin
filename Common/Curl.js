@@ -24,7 +24,7 @@ function Curl(requestParameters = {}) {
 
       if (!_.isNull(errors)) {
 
-        __logging.error(e);
+        __logging.error(e || errors);
         return reject(errors);
 
       }
@@ -39,13 +39,15 @@ function Curl(requestParameters = {}) {
         }
 
         catch(e) {
-
+          
           __logging.error(e);
           return reject(e.message);
 
         }
 
       }
+
+      return resolve(b);
 
     });
 

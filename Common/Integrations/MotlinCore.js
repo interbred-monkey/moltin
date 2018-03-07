@@ -1,6 +1,5 @@
 /*global __base*/
 /*global __logging*/
-/*global __formatError*/
 
 const _    = require('lodash/core'),
       curl = require(`${__base}/Common/Curl.js`);
@@ -24,23 +23,27 @@ class MoltinCore {
     let curlParams = {
       method: 'POST',
       uri: `${this.BaseURI}${this.AuthURI}`,
-      body: {
+      returnType: 'JSON',
+      form: {
         client_id: this.ClientId,
         client_secret: this.ClientSecret,
         grant_type: this.GrantType
       }
     };
 
-    let [err, data] = await curl(curlParams);
+    try {
 
-    if (!_.isNull(err) || !_.isObject(data) || !_.isString(data.access_token)) {
-
-      __logging.error(__formatError(err));
-      return ['Unable to authenticate with Motlin'];
+      let data = await curl(curlParams);
+      return [null, data.access_token];
 
     }
 
-    return [null, data.access_token];
+    catch(e) {
+
+      __logging.error(e);
+      return ['Unable to authenticate with Motlin'];
+
+    }
 
   }
 

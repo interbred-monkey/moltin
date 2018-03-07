@@ -5,19 +5,19 @@ class Logging {
   constructor() {
 
     this.library = {
-      log: process.stdout.write,
-      warn: process.stdout.write,
-      error: process.stderr.write,
+      log: console.log,
+      warn: console.warn,
+      error: console.error,
     };
 
   }
 
   CreateMessage(message, stack) {
 
-    return {
+    return JSON.stringify({
       message: message,
       stack: stack || console.trace
-    };
+    }, null, 2);
 
   }
 

@@ -2,7 +2,7 @@ postProducts:
   uri: /products
   method: POST
   controller: ProductsController
-  handler: postProducts
+  handler: postProduct
   parameters:
     name:
       type: string
@@ -30,7 +30,7 @@ getProductsById:
   uri: /products/:id
   method: POST
   controller: ProductsController
-  handler: getProductsById
+  handler: getProductById
   parameters:
     id:
       type: string

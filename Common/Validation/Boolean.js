@@ -6,10 +6,12 @@ class Boolean {
 
     switch(value) {
 
+      case true:
       case 'true':
         value = true;
         break;
 
+      case false:
       case 'false':
         value = false;
         break;
