@@ -1,0 +1,37 @@
+postProducts:
+  uri: /products
+  method: POST
+  controller: ProductsController
+  handler: postProducts
+  parameters:
+    name:
+      type: string
+      required: true
+    description:
+      type: string
+      required: true
+    price:
+      type: number
+      required: true
+    currency:
+      type: string
+      required: false
+      default: GBP
+    price_includes_tax:
+      type: boolean
+      required: false
+      default: false
+    publish:
+      type: boolean
+      required: true
+
+
+getProductsById:
+  uri: /products/:id
+  method: POST
+  controller: ProductsController
+  handler: getProductsById
+  parameters:
+    id:
+      type: string
+      required: true

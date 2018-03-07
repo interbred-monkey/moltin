@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  mysql:
+    image: mysql:8.0.4
+    ports:
+      - '3306:3306'
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=hello'
