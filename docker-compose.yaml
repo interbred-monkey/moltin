@@ -1,9 +1,7 @@
 version: '3.4'
 
 services:
-  mysql:
-    image: mysql:8.0.4
+  mongodb:
+    image: mongo:3.6-jessie
     ports:
-      - '3306:3306'
-    environment:
-      - 'MYSQL_ROOT_PASSWORD=hello'
+      - "27017:27017"

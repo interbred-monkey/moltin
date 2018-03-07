@@ -32,6 +32,8 @@
   },
   "scripts": {
     "install-production": "yarn install --production true",
-    "start": "forever start Main.js"
+    "start-forever": "forever start Main.js",
+    "start-docker": "forever -c 'node --harmony' Main.js",
+    "start": "node Main.js"
   }
 }
