@@ -81,9 +81,9 @@ class ProductsModel extends BaseModel {
           entityModel     = this.CreateEntityModel(params),
           entity          = this.CreateEntityFromModel(entityModel);
 
-      let connection = this.CreateDBConnection('products');
-      [error, entity] = await this.Insert(connection, entity);
-      this.CloseConnection(connection);
+      model.Id = entity._id;
+
+      [error, entity] = await this.Insert('products', entity);
 
       return [error, model];
 
@@ -112,9 +112,7 @@ class ProductsModel extends BaseModel {
 
     try {
 
-      let connection = this.CreateDBConnection('products');
-      let [error, entity] = await this.Get(connection, query);
-      this.CloseConnection(connection);
+      let [error, entity] = await this.Get('products', query);
       let model = this.CreateModelFromEntity(entity);
 
       return [error, model];
