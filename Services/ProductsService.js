@@ -42,7 +42,7 @@ class ProductsService {
 
     let productParams = productsLibrary.CreateProductParameters(params);
 
-    let [libraryError, res] = await productsLibrary.Create(productParams);
+    let [libraryError, data] = await productsLibrary.Create(productParams);
 
     if (!_.isNull(libraryError)) {
 
@@ -50,13 +50,7 @@ class ProductsService {
 
     }
 
-    if (!_.isObject(res.data) || !_.isString(res.data.id)) {
-
-      return ['Unable to create product, invalid external reference'];
-
-    }
-
-    params.externalId = res.data.id;
+    params.externalId = data.id;
 
     let [error, model] = await productsModel.Create(params);
 
@@ -64,11 +58,21 @@ class ProductsService {
 
   }
 
-  async GetProductById(params) {
+  async GetProductById(entityId) {
 
-    let [error, model] = await productsModel.Create(params);
+    let [error, entityModel] = await productsModel.GetById(entityId);
 
-    return [error, model];
+    if (!_.isNull(error)) {
+
+      return [error];
+
+    }
+
+    let [libraryError, data] = await productsLibrary.GetById(model.ExternalId);
+
+    let model = this.CreateModel(Object.assign(entityModel, data));
+
+    return [libraryError, model];
 
   }
 

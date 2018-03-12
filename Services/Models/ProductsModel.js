@@ -50,12 +50,8 @@ class ProductsModel extends BaseModel {
     return {
       Id: entity._id,
       Name: entity.Name,
-      Description: entity.Description,
-      Price:entity.Price,
-      Currency:entity.Currency,
-      PriceIncludesTax: entity.PriceIncludesTax,
-      Tax: entity.Tax,
-      State: entity.State
+      SKU: entity.SKU,
+      ExternalId: entity.ExternalId
     };
 
   }

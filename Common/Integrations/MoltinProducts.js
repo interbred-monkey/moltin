@@ -67,6 +67,13 @@ class MoltinProducts extends MotlinCore {
     try {
 
       let data = await curl(curlParams);
+
+      if (!_.isObject(data.data) || !_.isString(data.data.id)) {
+
+        throw __formatError(`malformed library response, ${JSON.stringify(data, null, 2)}`);
+
+      }
+
       return [null, data];
 
     }
